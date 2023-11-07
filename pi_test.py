@@ -1,5 +1,6 @@
 from spigot import *
 
+
 b = spigot_init(100)
 size = len(b[0])
 digits = []
