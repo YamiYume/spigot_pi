@@ -13,16 +13,17 @@ def radix_multiplication(b: Buffer) -> Buffer:
     spigot_list = [10 * x for x in spigot_list]
     return spigot_list, prov_digits
 
-def norm_per_digit(b: Buffer, position: int) -> tuple[Buffer, int, int]:
+def norm_per_digit(b: Buffer, position: int) -> tuple[Buffer, int, int, int]:
     if not position:
         raise Exception("position is 0")
     spigot_list = b[0].copy()
     prov_digits = b[1].copy()
     quot, rem = divmod(spigot_list[position], 2 * position + 1)
     spigot_list[position] = rem
-    spigot_list[position - 1] += quot * position
+    carry = quot * position
+    spigot_list[position - 1] += carry
     b = (spigot_list, prov_digits)
-    return b, quot, rem
+    return b, quot, rem, carry
 
 def new_digit_gen(b: Buffer) -> tuple[Buffer, int, int]:
     spigot_list = b[0].copy()
