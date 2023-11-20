@@ -44,11 +44,18 @@ class SpigotAnimation(Scene):
 
     def create_abs_pointer(self, arr: MyArray, index: int, label: str) -> MArraySlidingWindow:
         return MArraySlidingWindow(self, arr, index - arr.start_index, 1, label,
-                                   mob_label_args={"font_size": 25})
+                                   mob_label_args={"font_size": 30})
         
 def create_obj_list(objects: list[Mobject], direction) -> VGroup:
     obj_gr = VGroup(*objects)
     obj_gr.arrange(DOWN)
+    for obj in objects[1:]:
+        obj.align_to(objects[0], direction)
+    return obj_gr
+
+def create_obj_list_s(objects: list[Mobject], direction, spacing) -> VGroup:
+    obj_gr = VGroup(*objects)
+    obj_gr.arrange(DOWN, buff=spacing)
     for obj in objects[1:]:
         obj.align_to(objects[0], direction)
     return obj_gr

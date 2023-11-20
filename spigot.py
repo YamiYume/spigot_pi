@@ -21,7 +21,7 @@ def norm_per_digit(b: Buffer, position: int) -> tuple[Buffer, int, int, int]:
     quot, rem = divmod(spigot_list[position], 2 * position + 1)
     spigot_list[position] = rem
     carry = quot * position
-    spigot_list[position - 1] += carry
+    spigot_list[position - 1] = carry + spigot_list[position - 1]
     b = (spigot_list, prov_digits)
     return b, quot, rem, carry
 
@@ -69,7 +69,7 @@ def adv_by_cycles(b: Buffer, t: int) -> tuple[Buffer, tuple[int]]:
         output += new_output
     return b, output
 
-def adv_subcycle(b: Buffer) -> Buffer
+def adv_subcycle(b: Buffer) -> Buffer:
     b = radix_multiplication(b)
     for i in range(len(b[0]) - 1, 0, -1):
         b, _, _, _ = norm_per_digit(b, i)
