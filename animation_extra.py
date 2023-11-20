@@ -20,7 +20,7 @@ class SpigotAnimation(Scene):
         spigot_arr = MyArray(
                 self,
                 data,
-                mob_square_args = {'color': YELLOW_D, 'fill_color': GREEN_D, 'side_length': 0.5},
+                mob_square_args = {'color': YELLOW_D, 'fill_color': GREEN_D, 'side_length': 0.8},
                 mob_value_args = {'color': WHITE, 'font_size': 30},
                 mob_index_args = {'color': YELLOW_D, 'font_size': 30},
                 label = "spigot_arr",
@@ -34,10 +34,11 @@ class SpigotAnimation(Scene):
         prov_arr = MyArray(
                 self,
                 data,
-                mob_square_args = {'color': GOLD_A, 'fill_color': PURPLE_E, 'side_length': 0.5},
+                mob_square_args = {'color': GOLD_A, 'fill_color': PURPLE_E, 'side_length': 0.8},
                 mob_value_args = {'color': WHITE, 'font_size': 30},
                 mob_index_args = {'color': GOLD_A, 'font_size': 30},
                 label = "prov_arr",
+                index_start = 0
                 )
         return prov_arr
 

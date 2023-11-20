@@ -43,8 +43,11 @@ def prov_digits_norm(b: Buffer, new_dig: int) -> Buffer:
     return spigot_list, prov_digits
 
 def digits_emission(b: Buffer, new_dig: int) -> tuple[Buffer, tuple[int]]:
+    
     spigot_list = b[0].copy()
     prov_digits = b[1].copy()
+    if len(prov_digits) <= 1:
+        return (spigot_list, prov_digits), tuple()
     if new_dig == 10:
         digits_output = tuple(x for x in prov_digits[:-1])
         prov_digits = prov_digits[-1:]
@@ -55,4 +58,21 @@ def digits_emission(b: Buffer, new_dig: int) -> tuple[Buffer, tuple[int]]:
         prov_digits = prov_digits[-1:]
     b = (spigot_list, prov_digits)
     return b, digits_output
+
+def adv_by_cycles(b: Buffer, t: int) -> tuple[Buffer, tuple[int]]:
+    output = []
+    for _ in range(t):
+        b = adv_subcycle(b)
+        b, new_dig, _ = new_digit_gen(b)
+        b = prov_digits_norm(b, new_dig)
+        b, new_output = digits_emission(b, new_dig)
+        output += new_output
+    return b, output
+
+def adv_subcycle(b: Buffer) -> Buffer
+    b = radix_multiplication(b)
+    for i in range(len(b[0]) - 1, 0, -1):
+        b, _, _, _ = norm_per_digit(b, i)
+    return b
+    
 

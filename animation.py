@@ -46,7 +46,7 @@ class SpigotInitialization(SpigotAnimation):
         self.wait(1)
 
         spigot_arr2 = self.recreate_spigot_graph(b, 96, spigot_arr_length)
-        prov_arr2 = self.recreate_prov_graph(b, spigot_arr_lenght)
+        prov_arr2 = self.recreate_prov_graph(b, spigot_arr_length)
         nga = create_obj_list([spigot_arr2, prov_arr2], RIGHT)
         self.play(Transform(ga, nga))
         self.wait(1)
@@ -76,6 +76,10 @@ class SpigotProcessing(SpigotAnimation):
     def construct(self):
         title = Tex(r"Procesamiento Del Spigot $\pi$", font_size=40)
         self.play_title(title)
+        cycle = Tex(r"Ciclo 1", font_size=40)
+        pos_cycle = lambda x: x.to_edge(LEFT + DOWN)
+        pos_cycle(cycle)
+        self.play(Create(cycle))
 
         b = spigot_init(30)
         spigot_arr_length = 7
@@ -88,7 +92,7 @@ class SpigotProcessing(SpigotAnimation):
         self.play(Transform(spigot_arr, n_spigot_arr))
         self.wait(1)
         
-        pos_arr = lambda x: x.next_to(title, DOWN, buff=2).to_edge(LEFT, buff=1)
+        pos_arr = lambda x: x.next_to(title, DOWN, buff=2).to_edge(LEFT)
         self.play(pos_arr(spigot_arr.animate))
         self.wait(1)
         
@@ -111,11 +115,35 @@ class SpigotProcessing(SpigotAnimation):
         
         for i in range(10, 0, -1):
             b, r, c = self.spigot_processing_variables(vl, b, i, pos_v)
-            self.wait(1)
             self.spigot_processing_pointers(spigot_arr, r_p, c_p, i, r, c)
             self.wait(1)
             self.spigot_processing_graph(spigot_arr, b, i, pos_arr)
+        
+        self.remove(r_p, c_p)
+        n_cycle = Tex(r"Ciclo 2", font_size=40)
+        pos_cycle(n_cycle)
+        self.play(Transform(cycle, n_cycle))
+        self.wait(1)
+        b = spigot_init(30)
+        b, _ = adv_by_cycles(b, 1)
+        b = radix_multiplication(b)
+        n_spigot_arr = self.recreate_spigot_graph(b, 94, spigot_arr_length)
+        pos_arr(n_spigot_arr)
+        self.play(Transform(spigot_arr, n_spigot_arr))
+        spigot_arr.start_index = 94
+        r_p = self.create_abs_pointer(spigot_arr, 100, "r")
+        c_p = self.create_abs_pointer(spigot_arr, 99, "c")
+        self.play(Create(r_p), Create(c_p))
+        self.wait(1)
+        
+        for i in range(100, 94, -1):
+            b, r, c = self.spigot_processing_variables(vl, b, i, pos_v)
+            self.spigot_processing_pointers(spigot_arr, r_p, c_p, i, r, c)
             self.wait(1)
+            self.spigot_processing_graph(spigot_arr, b, i, pos_arr)
+
+        self.remove(r_p, c_p)
+        self.wait(1)
 
     def spigot_processing_variables(
             self, vl: VGroup, b: Buffer, i: int, pos_v
@@ -172,3 +200,7 @@ class SpigotProcessing(SpigotAnimation):
                 mob_label_args={"font_size": 25}
                 )
 
+class SpigotProvDigits(SpigotAnimation):
+    def construct(self):
+        title = Tex(r"extraccion de digitos provisionales" font_size = 40)
+        self.play_title(title)
