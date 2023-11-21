@@ -58,8 +58,8 @@ class SpigotInitialization(SpigotAnimation):
         self.play(ga.animate.next_to(gt, DOWN, buff=0.5).to_edge(LEFT, buff=1))
         self.wait(1)
 
-        l1 = Tex(r"- Inicializar el Spigot y la lista (o variables)\\",
-                 "de digitos provisionales",
+        l1 = Tex(r"- Inicializar la listaSpigot y la lista \\",
+                "(o variables) de digitos provisionales",
                  font_size = 30, tex_environment="flushleft")
         l2 = Tex(r"- Multiplicar cada posicion del spigot por\\",
                  r"10 para traer en frente la siguiente cifra\\",
@@ -74,7 +74,7 @@ class SpigotInitialization(SpigotAnimation):
         gl.next_to(gt, RIGHT, buff=0.8).align_to(gt, UP)
 
         self.play(Create(gl))
-        self.wait(1.5)
+        self.wait(7)
 
 class SpigotProcessing(SpigotAnimation):
     def construct(self):
@@ -361,7 +361,7 @@ class SpigotProvDigitsTenCase(SpigotAnimation):
         subtitle = Tex(r"Caso Diez", font_size = 40)
         self.play(Create(subtitle))
         self.play(subtitle.animate.to_edge(DOWN + LEFT))
-        cycle = Tex(r"Ciclo 856", font_size = 35)
+        cycle = Tex(r"Ciclo 857", font_size = 35)
         cycle.next_to(subtitle, UP).to_edge(LEFT)
         self.play(Create(cycle))
         self.wait(1)
@@ -369,12 +369,12 @@ class SpigotProvDigitsTenCase(SpigotAnimation):
         output = []
         spigot_arr_length = 5
         b = spigot_init(1000)
-        b, n_output = adv_by_cycles(b, 855)
+        b, n_output = adv_by_cycles(b, 856)
         output += list(n_output)
         
-        for c in range(3):
+        for c in range(2):
             b = adv_subcycle(b)
-            n_cycle = Tex(r"Ciclo " + str(856 + c), font_size = 35)
+            n_cycle = Tex(r"Ciclo " + str(857 + c), font_size = 35)
             n_cycle.next_to(subtitle, UP).to_edge(LEFT)
             self.play(Transform(cycle, n_cycle))
             self.wait(0.5)
@@ -413,15 +413,35 @@ class SpigotProvDigitsTenCase(SpigotAnimation):
             b = prov_digits_norm(b, new_dig)
 
             n_spigot_arr = self.recreate_spigot_graph(b, 0, spigot_arr_length)
-            n_prov_arr = self.recreate_prov_graph(b, spigot_arr_length)
+            if c != 1:
+                n_prov_arr = self.recreate_prov_graph(b, spigot_arr_length)
+            else:
+                n_prov_arr = prov_arr
+                prov_arr.update_elem_value(3, 10)
             nga = create_obj_list_s([n_spigot_arr, n_prov_arr], RIGHT, 1.2)
             nga.shift(0.8 * UP)
             nga.add(output_t)
 
             self.play(Transform(ga, nga))
-            
             self.remove(r_p, d_p)
             self.wait(1)
+            
+            if c == 1:
+                p1 = self.create_abs_pointer(prov_arr, 3, "0")
+                p2 = self.create_abs_pointer(prov_arr, 2, "+1")
+                self.play(Create(p1), Create(p2))
+                prov_arr.update_elem_value(3, 0)
+                prov_arr.update_elem_value(2, 10)
+                p2.shift_to_elem(1)
+                p1.shift_to_elem(2)
+                prov_arr.update_elem_value(2, 0)
+                prov_arr.update_elem_value(1, 10)
+                p2.shift_to_elem(0)
+                p1.shift_to_elem(1)
+                prov_arr.update_elem_value(1, 0)
+                prov_arr.update_elem_value(0, 1)
+                self.remove(p2, p1)
+
 
             b, n_output = digits_emission(b, new_dig)
             output += list(n_output)
