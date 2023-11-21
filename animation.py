@@ -12,6 +12,10 @@ class TitleScene(Scene):
         self.play(Create(name2))
         self.play(Create(name3))
         self.wait(1.5)
+        pi_f = Tex(r"$\pi = \frac{1}{3}(2 + \frac{2}{5}(2 + \frac{3}{7}(\cdots)))$", font_size=50)
+        pi_f.next_to(title, UP, buff=0.5)
+        self.play(Create(pi_f))
+        self.wait(1)
 
 class SpigotInitialization(SpigotAnimation):
     def construct(self):
